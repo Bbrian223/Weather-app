@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WeatherApp.Models
 {
-    public class ClimaResponse
+    public class WeatherResponse
     {
         public Coord coord { get; set; }
         public List<Weather> weather { get; set; }
