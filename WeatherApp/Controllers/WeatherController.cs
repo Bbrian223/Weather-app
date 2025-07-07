@@ -23,7 +23,13 @@ namespace WeatherApp.Controllers
         public async Task<ActionResult> Index(string ciudad)
         {
             var result = await _climaService.GetWeatherAsync(ciudad);
-            return View(result);
+
+            if (result != null)
+                return View(result);
+
+
+            ViewBag.ErrorMessage = "No se obtubieron datos de la ciudad especificada";
+            return View();
         }
     }
 }
