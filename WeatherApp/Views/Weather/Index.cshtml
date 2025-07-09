@@ -1,28 +1,49 @@
-﻿
-@{
-    ViewBag.Title = "Index";
-}
+﻿<script>
+        //Obttiene los datos de lat y lon para cargar el clima
 
-@model WeatherApp.Models.WeatherResponse
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
 
-<h2>Consultar Clima</h2>
+            // Redirigir con coordenadas al controlador
+            window.location.href = `/Weather/GetCurrentWeather?lat=${lat}&lon=${lon}`;
+        }, function () {
+            alert("No se pudo obtener tu ubicación.");
+        });
+</script>
 
-<form method="post">
-    <input type="text" name="ciudad" placeholder="Ciudad" required />
-    <button type="submit">Buscar</button>
-</form>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-sm-10 p-4 rounded shadow">
+            <div class="row justify-content-center">
+                <div class="col-4 p-3">
+                    @if (Model != null)
+                    {
+                        <h4>@Model.name</h4>
+                        <h1>@Model.main.temp °</h1>
+                        <p>@Model.weather[0].description</p>
+                        <br />
+                        <br />
+                        <p>Humedad: @Model.main.humidity %</p>
+                        <p>Viento: @Model.wind.speed m/s</p>
+                    }
 
-@if (Model != null)
-{
-    <h3>Clima en @Model.name</h3>
-    <p>Temperatura: @Model.main.temp °C</p>
-    <p>Descripción: @Model.weather[0].description</p>
-    <p>Humedad: @Model.main.humidity %</p>
-    <p>Viento: @Model.wind.speed m/s</p>
-}
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <h4 style="color:red;">@ViewBag.ErrorMessage</h4>
+                    }
+                </div>
+                <div class="col-6 p-3">
+                    <!-- Segunda mitad -->
+                    #imagen
+                </div>
+            </div>
+        </div>
 
-@if (ViewBag.ErrorMessage != null) 
-{ 
-    <h4 style="color:red;">@ViewBag.ErrorMessage</h4>
-}
+    </div>
+</div>
+
+
+
+    
 

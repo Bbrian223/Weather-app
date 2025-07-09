@@ -11,25 +11,25 @@ namespace WeatherApp.Controllers
     public class WeatherController : Controller
     {
 
-        private readonly WeatherServices _climaService = new WeatherServices();
+        private readonly WeatherServices _weatherService = new WeatherServices();
 
         [HttpGet]
         public ActionResult Index()
-        {
+        { 
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Index(string ciudad)
-        {
-            var result = await _climaService.GetWeatherAsync(ciudad);
 
-            if (result != null)
-                return View(result);
+        public async Task<ActionResult> GetCurrentWeather(double lat, double lon)
+        {   
+            var result = await _weatherService.GetWeatherForCoordAsync(lat,lon);
 
+            if(result != null)
+                return View("Index",result);
 
-            ViewBag.ErrorMessage = "No se obtubieron datos de la ciudad especificada";
-            return View();
+            ViewBag.ErrorMessage = "Errror al obtener datos actuales";
+            return View("Index");
         }
+
     }
 }

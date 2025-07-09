@@ -34,6 +34,20 @@ namespace WeatherApp.Services
             return weather;
         }
 
+        public async Task<WeatherResponse> GetWeatherForCoordAsync(double lat, double lon)
+        {
+            string url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}&units=metric&lang=es";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode) return null;
+
+            string json = await response.Content.ReadAsStringAsync();
+            WeatherResponse weather = JsonConvert.DeserializeObject<WeatherResponse>(json);
+
+            return weather;
+        }
+
 
     }
 }
